@@ -2,17 +2,18 @@
 
 
 from model import User
-# from model import Rating
-# from model import Movie
+from model import Rating
+from model import Movie
 
 from model import connect_to_db, db
 from server import app
+from datetime import datetime
 
 
 def load_users():
     """Load users from u.user into database."""
 
-    print "Users"
+    print "users"
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
@@ -37,9 +38,47 @@ def load_users():
 def load_movies():
     """Load movies from u.item into database."""
 
+    print "movies"
+    Movie.query.delete()
+
+    for row in open("seed_data/u.item"):
+        row = row.rstrip()
+        # print row
+        movie_id, title, released_at, imdb_url = row.split("|")[:4]
+        # print released_at
+        title = title.split("(")
+        title = title[0]
+        try:
+            released_at = datetime.strptime(released_at, "%d-%b-%Y")
+        except ValueError:
+            released_at = None
+        
+        movie = Movie(movie_id=movie_id,
+                      title=title,
+                      released_at=released_at,
+                      imdb_url=imdb_url)
+        db.session.add(movie)
+    db.session.commit()                      
+
 
 def load_ratings():
     """Load ratings from u.data into database."""
+
+    print "ratings"
+    Rating.query.delete()
+
+    for row in open("seed_data/u.data"):
+        row = row.strip()
+        user_id, movie_id, score = row.split()[:3]
+
+        rating = Rating(user_id=user_id,
+                        movie_id=movie_id,
+                        score=score)
+        db.session.add(rating)
+
+    db.session.commit()
+
+
 
 
 if __name__ == "__main__":

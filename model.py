@@ -24,7 +24,7 @@ class User(db.Model):
     zipcode = db.Column(db.String(15), nullable=True)
 
     
-
+    # how to return a redable object
     def __repr__(self):
         """Provide helpful representation when printed."""
 
@@ -43,7 +43,7 @@ class Movie(db.Model):
     imdb_url = db.Column(db.Text, nullable=True)
 
     
-
+    # how to return a redable object
     def __repr__(self):
         """Provide helpful representation when printed."""
         return "<Movie movie_id={} title={} released_at={}.>".format(self.movie_id,
@@ -58,10 +58,14 @@ class Rating(db.Model):
     movie_id = db.Column(db.Integer,  db.ForeignKey("movies.movie_id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     score = db.Column(db.Integer, nullable=False)
-
-    user = db.relationship("User")
-    movie = db.relationship("Movie")
-
+    
+    # Define relationship to user
+    user = db.relationship("User",
+                           backref=db.backref("ratings", order_by=rating_id))
+    # Define relationship to movie
+    movie = db.relationship("Movie",
+                           backref=db.backref("ratings", order_by=rating_id))
+    # how to return a redable object
     def __repr__(self):
         """Provide helpful representation when printed."""
         return "<Ratings movie_id={} user_id={} score={}.>".format(self.movie_id,

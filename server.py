@@ -31,6 +31,30 @@ def user_list():
     users = User.query.all()
     return render_template("users_list.html", users=users)
 
+@app.route("/login")
+def login_form():
+    """Render login form"""
+
+    return render_template("login.html")
+
+@app.route("/login_submission", methods=["POST"])
+def login_submission():
+    """Confirms username and password through database and sessions."""
+    # .get is safety net incase 'required' is removed from form in html
+    # checks the forms dict which is nested inside the request dictionary
+    email = request.forms.get("email")
+    password = request.forms.get("password")
+    user = User.query.filter(User.email == email).first()
+    if user:
+        # TODO check pw
+        # 1 add user to session
+        # flash message and them redirect "/"
+
+    else:
+        # add user and pw to database
+        # flash message and them redirect "/"
+
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

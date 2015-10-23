@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Movie Information</h>
+  <ul>
+    <li>
+        Movie title: <br> 
+        {{ movie.title }} 
+    </li>
+    <li>
+        Movie ID: <br>
+        {{ movie.movie_id}}
+    </li>
+    <li>
+        Release Date: <br>
+         {{ movie.released_at }}
+    </li>
+    <form action="/rating_confirmation/{{ movie.movie_id }}" method="POST">
+        <select name="score">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <input type="submit" value="Add SCORE!">
+    </form>
+    <li>
+        MOVIE Scores: <br>
+        {% for score in movie_ratings %}
+        {{ score }}<br>
+        {% endfor %}
+
+    </li>
+  </ul>
+{% endblock %}

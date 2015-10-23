@@ -19,5 +19,12 @@
         USER ZIPCODE: <br>
         {{ user.zipcode }}
     </li>
+    <li>
+        MOVIE TITLE: <br>
+        {% for title in users_movie_ratings %}
+        {{ title }}<br>
+        {% endfor %}
+
+    </li>
   </ul>
 {% endblock %}
